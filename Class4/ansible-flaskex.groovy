@@ -9,7 +9,7 @@ if (nodeIP.length() > 6) {
             git branch: 'master', changelog: false, poll: false, url: 'https://github.com/ikambarov/ansible-Flaskex.git'
         }
         withEnv(['ANSIBLE_HOST_KEY_CHECKING=False', 'FLASKEX_REPO=https://github.com/ikambarov/Flaskex.git', 'FLASKEX_BRANCH=master']) {
-            stage("Install Prereqs"){
+            stage("Install Prerequisites"){
                 ansiblePlaybook credentialsId: 'root', inventory: '${nodeIP},', playbook: 'prerequisites.yml'
                 }
             stage("Pull Flaskex"){
@@ -18,11 +18,11 @@ if (nodeIP.length() > 6) {
             stage("Install Python"){
                 ansiblePlaybook credentialsId: 'root', inventory: '${nodeIP},', playbook: 'install_python.yml'
                 }
-            stage("Start Application"){
+            stage("Start Flaskex"){
                 ansiblePlaybook credentialsId: 'root', inventory: '${nodeIP},', playbook: 'start_app.yml'
                 }
-            }  
         }  
+    }
 }
 else {
     error 'Please enter valid IP address'
