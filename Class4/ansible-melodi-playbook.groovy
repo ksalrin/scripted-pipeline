@@ -10,13 +10,12 @@ if (nodeIP?.trim()) {
                 stage('Pull Repo') {
                     git branch: '${branch}', changelog: false, poll: false, url: 'https://github.com/ikambarov/ansible-melodi.git'
                 }
-
-            withCredentials([sshUserPrivateKey(credentialsId: 'root', keyFileVariable: 'SSHKEY', passphraseVariable: '', usernameVariable: 'SSHUSERNAME')]) {
+                withEnv(['ANSIBLE_HOST_KEY_CHECKING=False']) {
                 stage("Install Apache"){
                     sh 'ansible-playbook -i "104.131.113.213," --private-key $SSHKEY main.yml'
-                }
-            }
-        }
+                    }
+                }  
+            }  
     }
 }
 else {
